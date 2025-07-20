@@ -32,9 +32,9 @@ A simple yet elegant web dashboard built with Flask to showcase a sample crypto 
 QUANT_DASHBOARD/
 app.py|
 templates/
-│   index.html
+index.html|
 static/
-│   style.css
+style.css|
 strategy.py|
 utils.py|
 reports|
