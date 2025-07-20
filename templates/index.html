@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crypto Strategy Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>🔍 Crypto Strategy Dashboard</h2>
+
+    <form method="POST">
+        <input type="text" name="symbol" placeholder="e.g. BTC, ETH, SOL" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if signal %}
+        <h3>Signal: {{ signal }}</h3>
+    {% endif %}
+
+    {% if plot_url %}
+        <img src="data:image/png;base64,{{ plot_url }}" alt="MACD Chart">
+    {% endif %}
+
+    {% if data %}
+        <h4>Recent Data:</h4>
+        {{ data|safe }}
+    {% endif %}
+</body>
+</html>
