@@ -30,12 +30,12 @@ A simple yet elegant web dashboard built with Flask to showcase a sample crypto 
 # Project Structure
 
 QUANT_DASHBOARD/
-app.py
+app.py|
 templates/
 │   index.html
 static/
 │   style.css
-strategy.py
-utils.py
-reports
+strategy.py|
+utils.py|
+reports|
 
