@@ -1,29 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Crypto Strategy Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Crypto Trading Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .signal { padding: 10px; margin: 10px 0; border-radius: 5px; font-weight: bold; }
+        .buy { background-color: #d4edda; color: #155724; }
+        .sell { background-color: #f8d7da; color: #721c24; }
+        .hold { background-color: #fff3cd; color: #856404; }
+        .form-group { margin: 15px 0; }
+        input, button { padding: 8px 12px; margin: 5px; }
+        .indicators { display: flex; gap: 20px; margin: 20px 0; }
+        .indicator-box { padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
 </head>
 <body>
-    <h2>🔍 Crypto Strategy Dashboard</h2>
+    <div class="container">
+        <h1>Cryptocurrency Trading Strategy Dashboard</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="symbol">Enter Cryptocurrency Symbol (e.g., BTC, ETH):</label>
+                <input type="text" id="symbol" name="symbol" required>
+                <button type="submit">Analyze</button>
+            </div>
+        </form>
 
-    <form method="POST">
-        <input type="text" name="symbol" placeholder="e.g. BTC, ETH, SOL" required>
-        <button type="submit">Analyze</button>
-    </form>
+        {% if signal %}
+        <div class="results">
+            <h2>Analysis Results</h2>
+            
+            <div class="indicators">
+                <div class="indicator-box">
+                    <h3>MACD Signal</h3>
+                    <div class="signal {% if 'BUY' in signal %}buy{% elif 'SELL' in signal %}sell{% else %}hold{% endif %}">
+                        {{ signal }}
+                    </div>
+                </div>
+                
+                <div class="indicator-box">
+                    <h3>Enhanced Strategy</h3>
+                    <div class="signal {% if 'BUY' in enhanced_signal %}buy{% elif 'SELL' in enhanced_signal %}sell{% else %}hold{% endif %}">
+                        {{ enhanced_signal }}
+                    </div>
+                </div>
+                
+                {% if rsi_value %}
+                <div class="indicator-box">
+                    <h3>RSI (14)</h3>
+                    <div class="signal {% if rsi_value < 30 %}buy{% elif rsi_value > 70 %}sell{% else %}hold{% endif %}">
+                        {{ rsi_value }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if sma_value %}
+                <div class="indicator-box">
+                    <h3>SMA (20)</h3>
+                    <div>{{ sma_value }}</div>
+                </div>
+                {% endif %}
+            </div>
 
-    {% if signal %}
-        <h3>Signal: {{ signal }}</h3>
-    {% endif %}
+            {% if plot_url %}
+            <div class="chart">
+                <h3>Technical Indicators</h3>
+                <img src="data:image/png;base64,{{ plot_url }}" alt="Technical Analysis Chart">
+            </div>
+            {% endif %}
 
-    {% if plot_url %}
-        <img src="data:image/png;base64,{{ plot_url }}" alt="MACD Chart">
-    {% endif %}
+            {% if data %}
+            <div class="data">
+                <h3>Recent Data</h3>
+                {{ data|safe }}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
 
-    {% if data %}
-        <h4>Recent Data:</h4>
-        {{ data|safe }}
-    {% endif %}
+        <div class="info">
+            <h3>Supported Indicators:</h3>
+            <ul>
+                <li><strong>MACD</strong> (Moving Average Convergence Divergence)</li>
+                <li><strong>SMA</strong> (Simple Moving Average - 20 period)</li>
+                <li><strong>RSI</strong> (Relative Strength Index - 14 period)</li>
+                <li><strong>Enhanced Multi-Factor Strategy</strong></li>
+            </ul>
+            <p><em>Data Source: Binance API & CoinGecko API</em></p>
+        </div>
+    </div>
 </body>
 </html>
